@@ -1,3 +1,4 @@
+import { func } from "prop-types";
 import React, { useState, useEffect } from "react";
 
 function ToDoList() {
@@ -22,26 +23,39 @@ function ToDoList() {
 
   useEffect(fetchAccountTodos, []);
 
-  async function insertOnClick() {
+  async function removeEverything(ids) {
     try {
-      const trimmedValue = inputValue.trim();
-      if (trimmedValue === "") {
-        return;
-      }
-      await fetch("https://playground.4geeks.com/todo/todos/fidelnieto25", {
-        method: "POST",
-        body: JSON.stringify({
-          label: inputValue,
-          is_done: false,
-        }),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      await fetchAccountTodos();
-      setInputValue("");
-    } catch (error) {}
+        await fetch(`https://playground.4geeks.com/todo/todos/${ids}`, {
+            method: "DELETE"
+        })
+        await fetchAccountTodos();
+    } catch (error) {
+    }
+  }
+
+  async function handleOnKeyDown(event) {
+    if(event.key === "Enter"){
+        try {
+            const trimmedValue = inputValue.trim();
+            if (trimmedValue === "") {
+              return;
+            }
+            await fetch("https://playground.4geeks.com/todo/todos/fidelnieto25", {
+              method: "POST",
+              body: JSON.stringify({
+                label: inputValue,
+                is_done: false,
+              }),
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            });
+            await fetchAccountTodos();
+            setInputValue("");
+          } catch (error) {}
+    }
+    
   }
 
   // Remove ON CLICK BUT, prompting the ID
@@ -64,6 +78,8 @@ function ToDoList() {
     } catch (error) {}
   }
 
+const toDoIds = toDo.map(item => item.id);
+
   return (
     <div>
       <input
@@ -73,8 +89,13 @@ function ToDoList() {
         name="todo"
         id="todo"
         placeholder="What we need to do?"
+        onKeyDown={handleOnKeyDown}
       />
-      <button onClick={insertOnClick}>Incluir toDo</button>
+      <button onClick={() => {
+        for (let i = 0; i < toDoIds.length; i++) {
+            removeEverything(toDoIds[i])
+        }
+      }} >Borrar todo</button>
 
       <div>
         <ul className="list-group d-flex w-100 justify-content-between">
