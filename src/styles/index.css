@@ -1,12 +1,17 @@
+.input{
 
-/* 
+    border-radius: 10px;
+    border: none;
+    height: 2.3rem;
+    width: 15rem;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
 
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+.removeButton{
+    margin-left: 25px   ;
+}
 
-*/
+.title{
+    font-family: monospace;
+}

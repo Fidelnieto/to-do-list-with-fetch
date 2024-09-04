@@ -1,4 +1,4 @@
-import { func } from "prop-types";
+
 import React, { useState, useEffect } from "react";
 
 function ToDoList() {
@@ -82,6 +82,7 @@ const toDoIds = toDo.map(item => item.id);
 
   return (
     <div>
+    <div className="mb-3">You have {toDo.length} {toDo.length > 1 ? "things" : "thing"} to do</div> 
       <input
         onChange={handleOnChange}
         value={inputValue}
@@ -90,15 +91,20 @@ const toDoIds = toDo.map(item => item.id);
         id="todo"
         placeholder="What we need to do?"
         onKeyDown={handleOnKeyDown}
+        className="input"
       />
+
       <button onClick={() => {
-        for (let i = 0; i < toDoIds.length; i++) {
-            removeEverything(toDoIds[i])
+        if(window.confirm("Are you sure you want to remove all the ToDos?")){
+            for (let i = 0; i < toDoIds.length; i++) {
+                removeEverything(toDoIds[i])
+            }
         }
-      }} >Borrar todo</button>
+        
+      }} className="removeButton btn btn-primary" >Remove all ToDos</button>
 
       <div>
-        <ul className="list-group d-flex w-100 justify-content-between">
+        <ul className="list-group d-flex w-100 ">
           {toDo.map((item, index) => (
             <li className="list-group-item" key={index}>
               {item.label}
@@ -109,6 +115,7 @@ const toDoIds = toDo.map(item => item.id);
           ))}
         </ul>
       </div>
+     
     </div>
   );
 }
